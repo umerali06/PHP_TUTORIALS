@@ -1,6 +1,6 @@
 # Setting Up a Virtual Host in XAMPP:
 
-This guide will take you step-by-step through the process of setting up Virtual Hosts in XAMPP for local web development. By the end of this guide, you will be able to create custom domains (like myproject.local) that point to different projects on your local server.
+This guide will take you step-by-step through the process of setting up Virtual Hosts in XAMPP for local web development. By the end of this guide, you will be able to create custom domains (like australia.local) that point to different projects on your local server.
 
 
 ## Prerequisites:
@@ -30,14 +30,14 @@ The root folder in XAMPP is where your website files will be stored. By default,
 
 2. Open the `htdocs folder` (this is the default web root folder).
 
-3. Inside htdocs, create a new folder for your project (e.g., myproject). This will act as the root directory for your Virtual Host.
+3. Inside htdocs, create a new folder for your project (e.g., australia). This will act as the root directory for your Virtual Host.
 
 **Example:**
-C:\xampp\htdocs\myproject
+C:\xampp\htdocs\australia
 
 ## 2. Add Localhost Configuration in `hosts File`:
 
-- The hosts file maps domain names to IP addresses on your local machine. By adding an entry for your custom domain (e.g., myproject.example.com), you can access your project using this domain.
+- The hosts file maps domain names to IP addresses on your local machine. By adding an entry for your custom domain (e.g., australia.example.com), you can access your project using this domain.
 
 **Steps:**
 - Open the Virtual Hosts Setup tool and navigate to the hosts file configuration section.
@@ -49,7 +49,7 @@ Alternatively, `manually` open the hosts file:
 **macOS:** `/private/etc/hosts`
 Add the following entry to the hosts file:
 ```bash
-127.0.0.1    myproject.example.com
+127.0.0.1    australia.example.com
 ```
 - Save and close the file.
 
@@ -83,18 +83,18 @@ Each Virtual Host requires specific configuration in Apache. The Virtual Hosts S
 
 Fill out the necessary fields:
 
-**Document Root:** Path to your project folder `(C:/xampp/htdocs/myproject)`.
-Server Name: Custom domain name (e.g., myproject.example.com).
+**Document Root:** Path to your project folder `(C:/xampp/htdocs/australia)`.
+Server Name: Custom domain name (e.g., australia.example.com).
 The tool will generate the necessary Virtual Host code:
 
 - The tool will generate the necessary Virtual Host code:
 ```bash
 <VirtualHost *:80>
-    ServerAdmin webmaster@myproject.example.com
-    DocumentRoot "C:/xampp/htdocs/myproject"
-    ServerName myproject.example.com
-    ErrorLog "logs/myproject.example.com-error.log"
-    CustomLog "logs/myproject.example.com-access.log" common
+    ServerAdmin webmaster@australia.example.com
+    DocumentRoot "C:/xampp/htdocs/australia"
+    ServerName australia.example.com
+    ErrorLog "logs/australia.example.com-error.log"
+    CustomLog "logs/australia.example.com-access.log" common
 </VirtualHost>
 ```
 - Copy this generated code.
@@ -110,13 +110,32 @@ The tool will generate the necessary Virtual Host code:
 2. Scroll to the bottom of the file and paste the Virtual Host code generated in the previous step.
 
 ```bash
-<VirtualHost *:80>
-    ServerAdmin webmaster@myproject.example.com
-    DocumentRoot "C:/xampp/htdocs/myproject"
-    ServerName myproject.example.com
-    ErrorLog "logs/myproject.example.com-error.log"
-    CustomLog "logs/myproject.example.com-access.log" common
-</VirtualHost>
+#	XAMPP	Required Default	!! Do Not Repeat !!
+	<VirtualHost *:80>
+	ServerName localhost
+	DocumentRoot "C:/xampp/htdocs/"
+	<Directory "C:/xampp/htdocs/">
+		Options Indexes FollowSymLinks Includes execCGI
+		AllowOverride All
+		Require all granted
+		</Directory>
+	</VirtualHost>
+
+
+#	XAMPP	australia: australia.example.com
+	<VirtualHost *:80>
+		ServerName australia.example.com
+		ServerAlias australia.example.com
+		DocumentRoot "C:\xampp\htdocs\australia"
+		ErrorLog "logs/australia.log"
+		CustomLog "logs/australia.log" combined
+		<Directory "C:\xampp\htdocs\australia">
+			Options FollowSymLinks Indexes
+			AllowOverride All
+			Require all granted
+		</Directory>
+	</VirtualHost>
+
 ```
 3. Save and close the file.
 
@@ -128,7 +147,7 @@ Now that the Virtual Host is set up, you need to start Apache and test the confi
 **Steps:**
 - Open the XAMPP Control Panel.
 - Click Start next to Apache to start the web server.
-- Open a browser and enter your custom domain `(e.g., http://myproject.example.com)`.
+- Open a browser and enter your custom domain `(e.g., http://australia.example.com)`.
 If everything is configured correctly, your website should load from the project folder you set up.
 
 
